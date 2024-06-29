@@ -25,7 +25,7 @@ public class Layout extends JFrame {
     for (int i = 0; i < 16; i++) {
       JTextField textField = new JTextField();
       textFieldList.add(textField);
-      textField.setFont(new Font(textField.getFont().getName(), textField.getFont().getStyle(), 120));
+      textField.setFont(new Font(textField.getFont().getName(), textField.getFont().getStyle(), 80));
       textField.setHorizontalAlignment(JTextField.CENTER);
       textField.setEditable(false);
       textField.setFocusable(false);
