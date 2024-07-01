@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -124,6 +125,26 @@ public class MyKeyListener implements KeyListener {
     }
     Random random = new Random();
     collect.get(random.nextInt(collect.size())).setText(num[random.nextInt(2)]+"");
+
+    /*try {
+      collect.get(random.nextInt(collect.size())).setText(num[random.nextInt(2)]+"");
+    } catch (Exception ex) {
+      // 如果出现异常，则代表游戏结束
+      int option = JOptionPane.showOptionDialog(
+              null, // 父窗口，默认为当前窗口的根窗体
+              "游戏已结束！",
+              "游戏结束",
+              JOptionPane.DEFAULT_OPTION, // 默认选项类型
+              JOptionPane.INFORMATION_MESSAGE, // 消息类型
+              null, // 自定义图标，这里不需要
+              new String[]{"确认"}, // 选项按钮的文字
+              "确认" // 默认选中的按钮
+      );
+      if (option == JOptionPane.OK_OPTION) {
+        // 用户点击了确认按钮，这里可以执行退出程序的操作
+        System.exit(0); // 关闭整个程序
+      }
+    }*/
   }
 
   @Override
