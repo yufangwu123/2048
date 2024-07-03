@@ -51,18 +51,26 @@ public class MyKeyListener implements KeyListener {
                 break;
         }
         List<JTextField> collect = textFields.stream().filter(a -> "".equals(a.getText())).collect(Collectors.toList());
-    /*if(collect.isEmpty()){
-      List<JTextField> collectOne = textFields.stream().filter(a -> "2048".equals(a.getText())).collect(Collectors.toList());
-      if(collectOne.isEmpty()){
-
-      }
-    }*/
-        Random random = new Random();
-        try {
-            collect.get(random.nextInt(collect.size())).setText(num[random.nextInt(2)] + "");
-        } catch (Exception ex) {
-            // 如果出现异常，则代表游戏结束
+        List<JTextField> collectOne = textFields.stream().filter(a -> "2048".equals(a.getText())).collect(Collectors.toList());
+        if(!collectOne.isEmpty()){
             int option = JOptionPane.showOptionDialog(
+                null, // 父窗口，默认为当前窗口的根窗体
+                "你赢了",
+                "游戏结束",
+                JOptionPane.DEFAULT_OPTION, // 默认选项类型
+                JOptionPane.INFORMATION_MESSAGE, // 消息类型
+                null, // 自定义图标，这里不需要
+                new String[]{"确认"}, // 选项按钮的文字
+                "确认" // 默认选中的按钮
+        );
+        if (option == JOptionPane.OK_OPTION) {
+            // 用户点击了确认按钮，这里可以执行退出程序的操作
+            System.exit(0); // 关闭整个程序
+        }
+        }
+        if(collect.isEmpty()){
+            if(!canSum(e,textFields)){
+                int option = JOptionPane.showOptionDialog(
                     null, // 父窗口，默认为当前窗口的根窗体
                     "游戏已结束！",
                     "游戏结束",
@@ -76,8 +84,13 @@ public class MyKeyListener implements KeyListener {
                 // 用户点击了确认按钮，这里可以执行退出程序的操作
                 System.exit(0); // 关闭整个程序
             }
+        }else{
+            
+            Random random = new Random();
+            collect.get(random.nextInt(collect.size())).setText(num[random.nextInt(2)] + "");
         }
     }
+}
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -125,6 +138,63 @@ public class MyKeyListener implements KeyListener {
             textFields.get(i + distance * 2).setText(c == 0 ? "" : c + "");
             textFields.get(i + distance * 3).setText(d == 0 ? "" : d + "");
         }
+    }
+
+    public boolean canSum(KeyEvent e,List<JTextField> textFields){
+        
+        Direction direction = null;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                direction = Direction.UP;
+                break;
+            case KeyEvent.VK_DOWN:
+                direction = Direction.DOWN;
+                break;
+            case KeyEvent.VK_LEFT:
+                direction = Direction.LEFT;
+                break;
+            case KeyEvent.VK_RIGHT:
+                direction = Direction.RIGHT;
+                break;
+        }
+
+        int length;
+        int distance;
+        int increment;
+        List<Integer> indexList = new ArrayList<>();
+        Collections.addAll(indexList, 0, 1, 2, 3);
+
+        // 通过方向判断遍历最大长度和偏移量
+        if (direction == Direction.UP || direction == Direction.DOWN) {
+            length = 16;
+            distance = LEFT_AND_RIGHT_DISTANCE;
+        } else {
+            length = 4;
+            distance = UP_AND_DOWN_DISTANCE;
+        }
+        increment = length / 4;
+        if (direction == Direction.DOWN || direction == Direction.RIGHT) {
+            Collections.reverse(indexList);
+        }
+
+        for (int i = 0; i < length; i += increment) {
+            int a = Integer.parseInt("".equals(textFields.get(i + distance * 0).getText()) ? String.valueOf(0) : textFields.get(i + distance * 0).getText());
+            int b = Integer.parseInt("".equals(textFields.get(i + distance * 1).getText()) ? String.valueOf(0) : textFields.get(i + distance * 1).getText());
+            int c = Integer.parseInt("".equals(textFields.get(i + distance * 2).getText()) ? String.valueOf(0) : textFields.get(i + distance * 2).getText());
+            int d = Integer.parseInt("".equals(textFields.get(i + distance * 3).getText()) ? String.valueOf(0) : textFields.get(i + distance * 3).getText());
+            List<Integer> list = new ArrayList<>();
+            if (direction == Direction.DOWN || direction == Direction.RIGHT) {
+                Collections.addAll(list, d, c, b, a);
+            } else {
+                Collections.addAll(list, a, b, c, d);
+            }
+            sortList(list);
+            List<Integer> collect = list.stream().filter(h->h==0).collect(Collectors.toList());
+            if(!collect.isEmpty()){
+               return true;
+            }
+        }
+        return false;
     }
 
 
