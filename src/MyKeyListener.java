@@ -84,12 +84,12 @@ public class MyKeyListener implements KeyListener {
                 // 用户点击了确认按钮，这里可以执行退出程序的操作
                 System.exit(0); // 关闭整个程序
             }
-        }else{
-            
+        }
+    }else{
+
             Random random = new Random();
             collect.get(random.nextInt(collect.size())).setText(num[random.nextInt(2)] + "");
         }
-    }
 }
 
     @Override
