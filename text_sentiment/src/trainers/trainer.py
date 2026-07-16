@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Union
 
 import torch
 import torch.nn as nn
@@ -23,18 +23,18 @@ class Trainer:
         self.criterion = criterion
         self.device = device
         self.grad_clip = grad_clip
-        self.history: dict[str, list[float]] = {
+        self.history: Dict[str, List[float]] = {
             "train_loss": [],
             "val_loss": [],
             "val_acc": [],
             "val_f1": [],
         }
 
-    def _run_epoch(self, loader, train: bool = True) -> dict[str, float]:
+    def _run_epoch(self, loader, train: bool = True) -> Dict[str, float]:
         self.model.train(train)
         total_loss = 0.0
-        all_preds: list[int] = []
-        all_labels: list[int] = []
+        all_preds: List[int] = []
+        all_labels: List[int] = []
 
         context = torch.enable_grad() if train else torch.no_grad()
         with context:
@@ -72,9 +72,9 @@ class Trainer:
         train_loader,
         val_loader,
         epochs: int,
-        ckpt_path: str | Path,
+        ckpt_path: Union[str, Path],
         patience: int = 3,
-    ) -> dict[str, Any]:
+    ) -> Dict[str, Any]:
         ckpt_path = Path(ckpt_path)
         ckpt_path.parent.mkdir(parents=True, exist_ok=True)
 
