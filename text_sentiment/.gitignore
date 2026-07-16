@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+
+# 训练产物（保留目录）
+checkpoints/*.pt
+checkpoints/*.json
+!checkpoints/.gitkeep

@@ -1,0 +1,37 @@
+# 文本情感分类训练配置（改这里就能换实验设置）
+seed: 42
+device: auto  # auto | cpu | cuda
+
+data:
+  train_path: data/sample/train.csv
+  val_path: data/sample/val.csv
+  # char: 按字切分（中文入门最稳）; word: 按空格切分（英文）
+  tokenize: char
+  max_len: 128
+  min_freq: 1
+  batch_size: 32
+  num_workers: 0
+
+model:
+  name: textcnn  # textcnn | bilstm
+  embed_dim: 128
+  hidden_dim: 128
+  num_classes: 2
+  dropout: 0.3
+  # TextCNN only
+  kernel_sizes: [3, 4, 5]
+  num_filters: 64
+  # BiLSTM only
+  num_layers: 1
+
+train:
+  epochs: 8
+  lr: 0.001
+  weight_decay: 0.0001
+  grad_clip: 5.0
+  early_stop_patience: 3
+
+output:
+  dir: checkpoints
+  vocab_file: checkpoints/vocab.json
+  best_model: checkpoints/best_model.pt
