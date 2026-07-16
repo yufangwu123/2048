@@ -6,6 +6,7 @@ from __future__ import annotations
 import csv
 import random
 from pathlib import Path
+from typing import List, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "data" / "sample"
@@ -149,9 +150,9 @@ def augment(text: str, rng: random.Random) -> str:
     return text
 
 
-def build_rows(seed: int = 42) -> list[tuple[str, int]]:
+def build_rows(seed: int = 42) -> List[Tuple[str, int]]:
     rng = random.Random(seed)
-    rows: list[tuple[str, int]] = []
+    rows = []  # type: List[Tuple[str, int]]
     for text in POSITIVE:
         rows.append((text, 1))
         rows.append((augment(text, rng), 1))
@@ -162,7 +163,7 @@ def build_rows(seed: int = 42) -> list[tuple[str, int]]:
     return rows
 
 
-def write_csv(path: Path, rows: list[tuple[str, int]]) -> None:
+def write_csv(path: Path, rows: List[Tuple[str, int]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)

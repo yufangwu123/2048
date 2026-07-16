@@ -24,6 +24,8 @@
 
 ## 环境准备
 
+需要 **Python 3.8+**（推荐 3.9/3.10）。
+
 ```bash
 cd text_sentiment
 python3 -m venv .venv

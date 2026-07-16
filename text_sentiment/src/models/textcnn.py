@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List, Optional
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,7 +15,7 @@ class TextCNN(nn.Module):
         vocab_size: int,
         embed_dim: int = 128,
         num_classes: int = 2,
-        kernel_sizes: list[int] | None = None,
+        kernel_sizes: Optional[List[int]] = None,
         num_filters: int = 64,
         dropout: float = 0.3,
         padding_idx: int = 0,
@@ -25,7 +29,7 @@ class TextCNN(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.fc = nn.Linear(num_filters * len(kernel_sizes), num_classes)
 
-    def forward(self, input_ids: torch.Tensor, lengths: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(self, input_ids: torch.Tensor, lengths: Optional[torch.Tensor] = None) -> torch.Tensor:
         # [B, L, E] -> [B, E, L] for Conv1d
         x = self.embedding(input_ids).transpose(1, 2)
         feats = [F.relu(conv(x)).max(dim=2).values for conv in self.convs]

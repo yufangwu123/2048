@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, Union
 
 import yaml
 
 
-def load_config(path: str | Path) -> dict[str, Any]:
+def load_config(path: Union[str, Path]) -> Dict[str, Any]:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Dict, Tuple, Union
 
 import pandas as pd
 import torch
@@ -10,7 +11,7 @@ from src.datasets.vocab import Vocab, tokenize
 
 
 class SentimentDataset(Dataset):
-    def __init__(self, csv_path: str | Path, vocab: Vocab, max_len: int, tokenize_mode: str):
+    def __init__(self, csv_path: Union[str, Path], vocab: Vocab, max_len: int, tokenize_mode: str):
         df = pd.read_csv(csv_path)
         if not {"text", "label"}.issubset(df.columns):
             raise ValueError(f"{csv_path} 需要包含列: text, label")
@@ -23,7 +24,7 @@ class SentimentDataset(Dataset):
     def __len__(self) -> int:
         return len(self.texts)
 
-    def __getitem__(self, idx: int) -> dict[str, torch.Tensor]:
+    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         tokens = tokenize(self.texts[idx], self.tokenize_mode)
         ids = self.vocab.encode(tokens, self.max_len)
         return {
@@ -34,14 +35,14 @@ class SentimentDataset(Dataset):
 
 
 def build_dataloaders(
-    train_path: str | Path,
-    val_path: str | Path,
+    train_path: Union[str, Path],
+    val_path: Union[str, Path],
     tokenize_mode: str,
     max_len: int,
     min_freq: int,
     batch_size: int,
     num_workers: int = 0,
-) -> tuple[DataLoader, DataLoader, Vocab]:
+) -> Tuple[DataLoader, DataLoader, Vocab]:
     train_df = pd.read_csv(train_path)
     vocab = Vocab.build(train_df["text"].astype(str).tolist(), tokenize_mode, min_freq)
 

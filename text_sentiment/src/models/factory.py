@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict
 
 import torch.nn as nn
 
@@ -8,7 +8,7 @@ from src.models.bilstm import BiLSTMClassifier
 from src.models.textcnn import TextCNN
 
 
-def build_model(name: str, vocab_size: int, cfg: dict[str, Any]) -> nn.Module:
+def build_model(name: str, vocab_size: int, cfg: Dict[str, Any]) -> nn.Module:
     name = name.lower()
     if name == "textcnn":
         return TextCNN(

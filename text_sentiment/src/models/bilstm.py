@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Optional
+
 import torch
 import torch.nn as nn
 
@@ -28,7 +32,7 @@ class BiLSTMClassifier(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.fc = nn.Linear(hidden_dim * 2, num_classes)
 
-    def forward(self, input_ids: torch.Tensor, lengths: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(self, input_ids: torch.Tensor, lengths: Optional[torch.Tensor] = None) -> torch.Tensor:
         x = self.embedding(input_ids)
         if lengths is not None:
             lengths = lengths.cpu().clamp(min=1)
